@@ -24,6 +24,8 @@
     curl
     wget
     rsync
+    nh
+    neovim
   ];
 
   # Home Manager
