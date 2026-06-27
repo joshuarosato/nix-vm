@@ -1,6 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   imports = [
     ./hardware-configuration.nix
+    inputs.nix-index-database.nixosModules.default
   ];
 
   # Bootloader setup
@@ -46,8 +47,17 @@
 
   networking.firewall.allowedTCPPorts = [ 22 ];
 
+  # Enable nix-index and its command-not-found integration
+  programs.nix-index.enable = true;
+
+  # Disable the default NixOS command-not-found to prevent conflicts
+  programs.command-not-found.enable = false;
+
   # Necessary for Flakes to work after install
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   system.stateVersion = "26.05";
 }
