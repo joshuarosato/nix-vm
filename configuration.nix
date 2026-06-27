@@ -53,10 +53,31 @@
   # Disable the default NixOS command-not-found to prevent conflicts
   programs.command-not-found.enable = false;
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+    persistent = true;
+  };
+
+  nix.settings.auto-optimise-store = true;
+  nix.optimise.automatic = true;
+  nix.optimise.dates = "weekly"; # Can also be an array
+
+  nix.settings.trusted-users = [ "joshua" ];
+
   # Necessary for Flakes to work after install
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+  ];
+
+  nix.settings.substituters = [
+    "https://nix-community.cachix.org"
+  ];
+
+  nix.settings.trusted-public-keys = [
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
   system.stateVersion = "26.05";
